@@ -1,0 +1,211 @@
+{
+  "Uuid": "fbd055db-1380-4c7b-bac4-9b0ab217c0be",
+  "IsCustomNode": true,
+  "Category": "BLIBET_NODES_2025.LoadableFamilies.Arquitecture.Build.Actions",
+  "Description": "",
+  "Name": "ColumnFamilies",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n######################################################\r\n#Inputs\r\ncolumns_collector=FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Columns).WhereElementIsElementType().ToElements()\r\n\r\nstructural_columns_collector=FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_StructuralColumns).WhereElementIsElementType().ToElements()\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\ncolumn_families=[]\r\ncolumn_family_names=[]\r\nfor column in columns_collector:\r\n    this_column=column.Family\r\n    if this_column.Name not in column_family_names:\r\n        column_family_names.append(this_column.Name)\r\n        column_families.append(this_column)\r\n\r\nfamily_structural_columns=[]\r\nfamily_structural_column_names=[]\r\nfor structural_column in structural_columns_collector:\r\n    thisStructuralColumn=structural_column.Family\r\n    if thisStructuralColumn.Name not in family_structural_column_names:\r\n        family_structural_column_names.append(thisStructuralColumn.Name)\r\n        family_structural_columns.append(thisStructuralColumn)\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = column_families,family_structural_columns",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "2349d7ae2685435d93882fced17f55f4",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "3f66460f15fe4bcea21153497d407f1a",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "x[0];\nx[1];",
+      "Id": "5e4911ade2ca438bbbd141f2bf143566",
+      "Inputs": [
+        {
+          "Id": "b3f68235ad2d4ae18a059c9873bf9b2b",
+          "Name": "x",
+          "Description": "x",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "574baf5e0837464090263729533ba124",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "b06a6d1771d04569a04b45fe15f3e78c",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Columns",
+      "Id": "66589ebd66e6451b97b1d10b53cdb38c",
+      "Inputs": [
+        {
+          "Id": "8e773fb22626471787705f079e6564b1",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "StructuralColumns",
+      "Id": "f005136996fa4f98814e4aa807819805",
+      "Inputs": [
+        {
+          "Id": "1e8d1ea35cce40699c955b778f645216",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "3f66460f15fe4bcea21153497d407f1a",
+      "End": "b3f68235ad2d4ae18a059c9873bf9b2b",
+      "Id": "93e0cfccec964c31addff8bc47317452",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "574baf5e0837464090263729533ba124",
+      "End": "8e773fb22626471787705f079e6564b1",
+      "Id": "181a7d6ff8714e97b1f4a5ee772bef6a",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "b06a6d1771d04569a04b45fe15f3e78c",
+      "End": "1e8d1ea35cce40699c955b778f645216",
+      "Id": "ce9b064fbf21454f88e9ea0a88778c81",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.16.2.5624",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "2349d7ae2685435d93882fced17f55f4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 431.0,
+        "Y": 450.155
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "5e4911ade2ca438bbbd141f2bf143566",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 705.0,
+        "Y": 450.155
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "66589ebd66e6451b97b1d10b53cdb38c",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 959.0,
+        "Y": 384.5
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "f005136996fa4f98814e4aa807819805",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 959.0,
+        "Y": 532.5
+      }
+    ],
+    "Annotations": [],
+    "X": -264.0,
+    "Y": 96.0,
+    "Zoom": 1.0
+  }
+}

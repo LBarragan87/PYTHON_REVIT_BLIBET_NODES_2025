@@ -1,0 +1,171 @@
+{
+  "Uuid": "5d26bcc0-5922-4722-8377-e290ef5504c0",
+  "IsCustomNode": true,
+  "Category": "BLIBET_NODES_2025.Structure.Actions",
+  "Description": "",
+  "Name": "RebarEndByName",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Rebar_End_Treatment",
+      "Id": "b5f1696774be48bf9a059ead8c8cfe3d",
+      "Inputs": [
+        {
+          "Id": "563a475fbaae4127845045c1673c4c94",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n######################################################\r\n#Inputs\r\n\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nstructural_rebars=FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rebar).WhereElementIsElementType().ToElements()\r\n\r\nrebar_bar_name=UnwrapElement(IN[0])\r\nrebar_end_by_name=filter(lambda rebar:rebar.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM).AsValueString()==\"End Treatment\" and rebar.get_Parameter(BuiltInParameter.SYMBOL_NAME_PARAM).AsValueString()==rebar_bar_name,structural_rebars)\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = rebar_end_by_name",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "e9ec7a4052c3424a88da7a0db25ac969",
+      "Inputs": [
+        {
+          "Id": "cc81bf30b3d744e3bb4c79a59f954184",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7fa1eaf42baf45699fdde034086c2856",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "Rebar_End_Treatment_Name",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "1347731e45354818a86ec798e21ab713",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "b856b9afe79942f5a21241a669e90e30",
+          "Name": "",
+          "Description": "Input Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "7fa1eaf42baf45699fdde034086c2856",
+      "End": "563a475fbaae4127845045c1673c4c94",
+      "Id": "dc91ed202be2466f9d343cb9eed8eeff",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "b856b9afe79942f5a21241a669e90e30",
+      "End": "cc81bf30b3d744e3bb4c79a59f954184",
+      "Id": "62c564a9be154a2b8c18eca406d61cdb",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.16.2.5624",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "b5f1696774be48bf9a059ead8c8cfe3d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1754.739357454102,
+        "Y": 376.857054787803
+      },
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "e9ec7a4052c3424a88da7a0db25ac969",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1496.0472078349699,
+        "Y": 399.417855658355
+      },
+      {
+        "Name": "Input",
+        "ShowGeometry": true,
+        "Id": "1347731e45354818a86ec798e21ab713",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1078.8038894569411,
+        "Y": 375.29763007810789
+      }
+    ],
+    "Annotations": [],
+    "X": -728.68237234850949,
+    "Y": 24.795594974160934,
+    "Zoom": 0.73894747066479183
+  }
+}

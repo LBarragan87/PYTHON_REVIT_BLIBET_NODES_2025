@@ -1,0 +1,303 @@
+{
+  "Uuid": "bb130be9-6ca8-4894-83dd-71efbc3fc4ca",
+  "IsCustomNode": true,
+  "Category": "BLIBET_NODES_2025.Structure.Query",
+  "Description": "",
+  "Name": "StructuralRebars",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n######################################################\r\n#Inputs\r\n\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nstructural_rebars=FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Rebar).WhereElementIsElementType().ToElements()\r\n\r\nrebar_bars=[]\r\nrebar_shapes=[]\r\nrebar_hooks=[]\r\nrebar_ends=[]\r\nfor rebar in structural_rebars:\r\n    this_type=rebar.get_Parameter(BuiltInParameter.SYMBOL_FAMILY_NAME_PARAM).AsValueString()\r\n    if this_type==\"Rebar Bar\":\r\n        rebar_bars.append(rebar)\r\n    elif this_type==\"Rebar Shape\":\r\n        rebar_shapes.append(rebar)\r\n    elif this_type==\"Rebar Hook\":\r\n        rebar_hooks.append(rebar)\r\n    elif this_type==\"End Treatement\":\r\n        rebar_ends.append(rebar)\r\n\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = rebar_bars,rebar_shapes,rebar_hooks,rebar_hooks",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "d99010693bfc4d8fad9e3da70048d404",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "d9d0367c604044d5b38c1ae22e84f283",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "x[0];\nx[1];\nx[2];\nx[3];",
+      "Id": "03499591b3714efc83aae39aee9ad894",
+      "Inputs": [
+        {
+          "Id": "dda68459246b483c8adef8eb36dba8a2",
+          "Name": "x",
+          "Description": "x",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6c0006f891874b949539ca7d3c07a2a9",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "63c6b1d67969474d82c7f810222f22db",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "2f699ab21e604d99a02902c060d9fa49",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "696bf64572624e9485104593a3ce632e",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Rebar_Bars",
+      "Id": "f3aeaa90f602495ba40b7d7c0fa8a3a3",
+      "Inputs": [
+        {
+          "Id": "49a5c8b5c70b47ed93385dbbbf0f50d0",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Rebar_Shapes",
+      "Id": "01a106bad3b149d89b71aec221ae905e",
+      "Inputs": [
+        {
+          "Id": "3dfdd9b790b0464da1f4f9b405cb1e65",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "Rebar_Hooks",
+      "Id": "4dc5de737b51479c85b51ebcfc0b7443",
+      "Inputs": [
+        {
+          "Id": "ae67f22161a24e11a3012932e8d9b1c9",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "End_Treatements",
+      "Id": "f44d9e7784084083a5dc16b6bbe4fc2e",
+      "Inputs": [
+        {
+          "Id": "97dc6d56d884401d9d38bb4f515fd2f8",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "d9d0367c604044d5b38c1ae22e84f283",
+      "End": "dda68459246b483c8adef8eb36dba8a2",
+      "Id": "7a32ae4485604d62ac0b31195ced9c38",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6c0006f891874b949539ca7d3c07a2a9",
+      "End": "49a5c8b5c70b47ed93385dbbbf0f50d0",
+      "Id": "8539c847ed8243168b3d10e14bcef69d",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "63c6b1d67969474d82c7f810222f22db",
+      "End": "3dfdd9b790b0464da1f4f9b405cb1e65",
+      "Id": "3f08c268946c4282be10f01818a710fd",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "2f699ab21e604d99a02902c060d9fa49",
+      "End": "ae67f22161a24e11a3012932e8d9b1c9",
+      "Id": "941e0910f23e4ce485624e23b4757df1",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "696bf64572624e9485104593a3ce632e",
+      "End": "97dc6d56d884401d9d38bb4f515fd2f8",
+      "Id": "1d4f87ef0bba4e41856d06b09b3f02d2",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.16.2.5624",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "d99010693bfc4d8fad9e3da70048d404",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 601.0,
+        "Y": 664.0
+      },
+      {
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Id": "03499591b3714efc83aae39aee9ad894",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 828.0,
+        "Y": 686.0
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "f3aeaa90f602495ba40b7d7c0fa8a3a3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1062.5157507982076,
+        "Y": 524.38781149858016
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "01a106bad3b149d89b71aec221ae905e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1082.4335383080734,
+        "Y": 669.40830926245667
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "4dc5de737b51479c85b51ebcfc0b7443",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1087.0837477144048,
+        "Y": 809.14073115892222
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "f44d9e7784084083a5dc16b6bbe4fc2e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1074.347137691313,
+        "Y": 987.65913485948556
+      }
+    ],
+    "Annotations": [],
+    "X": -859.50771360238491,
+    "Y": -653.041289764277,
+    "Zoom": 1.5546925571943866
+  }
+}
