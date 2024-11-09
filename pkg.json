@@ -1,1 +1,21 @@
-{"license":"MIT","file_hash":null,"name":"BLIBET_NODES_2025","version":"2024.9.24","description":"Personal Nodes","group":"","keywords":["revit","document","database"],"dependencies":[],"host_dependencies":["Revit","CPython3"],"contents":"ColumnFamilies - No description provided, DimensionTypes - No description provided, Document_Categories - No description provided, DoorFamilies - No description provided, Get_Categories_By_Id - No description provided, Materials - No description provided, PiPingSystemByName - No description provided, PipingSystems - No description provided, RebarBarByName - No description provided, RebarEndByName - No description provided, RebarShapeByName - No description provided, Rebar_Hook_ByName - No description provided, StructuralRebars - No description provided, TextTypes - No description provided, WindowFamilies - No description provided","engine_version":"2.16.2.5624","engine":"dynamo","engine_metadata":"","site_url":"https://www.linkedin.com/in/lbarragan87/","repository_url":"","contains_binaries":false,"node_libraries":[],"copyright_holder":"lbar87","copyright_year":"2024"}
+{
+    "license": "MIT",
+    "file_hash": null,
+    "name": "BLIBET_NODES_2025",
+    "version": "2024.9.24",
+    "description": "Personal Nodes",
+    "group": "",
+    "keywords": ["revit", "document", "database"],
+    "dependencies": [],
+    "host_dependencies": ["Revit", "CPython3"],
+    "contents": "ColumnFamilies - No description provided, DimensionTypes - No description provided, Document_Categories - No description provided, DoorFamilies - No description provided, Get_Categories_By_Id - No description provided, Materials - No description provided, PiPingSystemByName - No description provided, PipingSystems - No description provided, RebarBarByName - No description provided, RebarEndByName - No description provided, RebarShapeByName - No description provided, Rebar_Hook_ByName - No description provided, StructuralRebars - No description provided, TextTypes - No description provided, WindowFamilies - No description provided",
+    "engine_version": "2.16.2.5624",
+    "engine": "dynamo",
+    "engine_metadata": "",
+    "site_url": "https://www.linkedin.com/in/lbarragan87/",
+    "repository_url": "",
+    "contains_binaries": false,
+    "node_libraries": [],
+    "copyright_holder": "lbar87",
+    "copyright_year": "2024"
+}
