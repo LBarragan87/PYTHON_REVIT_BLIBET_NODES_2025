@@ -1,9 +1,9 @@
 {
-  "Uuid": "dd1e9665-684e-4095-999b-5be186f81714",
+  "Uuid": "baed8052-bdea-44a8-be13-ff6399033a59",
   "IsCustomNode": true,
   "Category": "BLIBET_NODES_2025.Pipes.Create",
   "Description": "",
-  "Name": "CreatePipe",
+  "Name": "CreatePipe_ByStrings",
   "ElementResolver": {
     "ResolutionMap": {}
   },
@@ -17,10 +17,10 @@
       "Engine": "CPython3",
       "EngineName": "CPython3",
       "VariableInputPorts": true,
-      "Id": "48bf2c3c58154d39ba15c55af2379f70",
+      "Id": "fd44892d4d364294b22b803451ea720a",
       "Inputs": [
         {
-          "Id": "d91c992236fc40eead4643e1f4fa8eb7",
+          "Id": "07121e3c6aa7499080cb4283c2f7a171",
           "Name": "IN[0]",
           "Description": "Input #0",
           "UsingDefaultValue": false,
@@ -29,7 +29,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "8906c740c53b4f85a86bd3dfb5e7bbc1",
+          "Id": "bbe18b37e7fc404d85546f4547e5a428",
           "Name": "IN[1]",
           "Description": "Input #1",
           "UsingDefaultValue": false,
@@ -38,7 +38,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "ca7772f10c224990b7677cff1f1f47c3",
+          "Id": "277b06c3dbd74f81af80d16ff0086a1f",
           "Name": "IN[2]",
           "Description": "Input #2",
           "UsingDefaultValue": false,
@@ -47,7 +47,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "5a181081d92c427bb1ba9674f735eaad",
+          "Id": "2aaa688b34c446b48fea6bfeb1cb9235",
           "Name": "IN[3]",
           "Description": "Input #3",
           "UsingDefaultValue": false,
@@ -56,7 +56,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "c3d98bdd05fd41ee8396eb18f061543d",
+          "Id": "29611a47720641a2826ef8e3bb605a23",
           "Name": "IN[4]",
           "Description": "Input #4",
           "UsingDefaultValue": false,
@@ -65,7 +65,7 @@
           "KeepListStructure": false
         },
         {
-          "Id": "b5c922e385b84c9f9d512321cbc7cbac",
+          "Id": "98351db3ad5541cfa4c2c68db5a42e13",
           "Name": "IN[5]",
           "Description": "Input #5",
           "UsingDefaultValue": false,
@@ -76,7 +76,73 @@
       ],
       "Outputs": [
         {
-          "Id": "d0705c2ab6cc48b48228d1d6c55fcefa",
+          "Id": "070ed43162c046448e3fb302d6db0ad4",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n######################################################\r\n#Inputs\r\npiping_system_name=UnwrapElement(IN[0])\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\npiping_systems=FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_PipingSystem).WhereElementIsElementType().ToElements()\r\n\r\n\r\npiping_system_by_name=filter(lambda system:system.get_Parameter(BuiltInParameter.SYMBOL_NAME_PARAM).AsValueString()==piping_system_name,piping_systems)\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = piping_system_by_name",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "43826e6e36df4899b0beb87884b8c3ca",
+      "Inputs": [
+        {
+          "Id": "47466c0fb6f148d99cfd92565385c9cd",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ba116333ef094c899ee0b7c596200d15",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n######################################################\r\n#Inputs\r\npipe_type_name=IN[0]\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\npipe_types=FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_PipeCurves).WhereElementIsElementType().ToElements()\r\n    \r\npipe_type_by_name=filter(lambda pipe_type:pipe_type.get_Parameter(BuiltInParameter.SYMBOL_NAME_PARAM).AsValueString() == pipe_type_name,pipe_types)\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = pipe_type_by_name",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "70c009290a4d4559a0f95919072be484",
+      "Inputs": [
+        {
+          "Id": "694c2ff5edc44a56876963d779aaf81b",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "d29ec31d0f0a479e802d0456c9bfc4ef",
           "Name": "OUT",
           "Description": "Result of the python script",
           "UsingDefaultValue": false,
@@ -98,11 +164,11 @@
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "e81c79d2b5f4441f8d4455b53afb2357",
+      "Id": "0d14a794a49e469282103e01a80a2ba8",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "0929509b343348ea817661616d57a495",
+          "Id": "dbe371912e554ead8b5e6db244c2315a",
           "Name": "",
           "Description": "Input Data",
           "UsingDefaultValue": false,
@@ -124,11 +190,11 @@
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "49c2ebe1bd78411ebed29d8133dbcee9",
+      "Id": "4ef52d75f1044eef8143125f5ae205aa",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "1a0934c4bb8f4418bf593bb2274ea90f",
+          "Id": "73a4d1e263f24f50a161a2ba323dff00",
           "Name": "",
           "Description": "Input Data",
           "UsingDefaultValue": false,
@@ -150,11 +216,11 @@
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "a44b09f024d14723bdccd0c220946a65",
+      "Id": "2c2fa79e470747c3bcdf974679fd2f4f",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "775f4fcbbfd84725982b597ac939c4c7",
+          "Id": "cf9815162f144f589986b074da63aab3",
           "Name": "",
           "Description": "Input Data",
           "UsingDefaultValue": false,
@@ -176,11 +242,11 @@
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "6ad2fc52f7f84e93a534250d4c37fed3",
+      "Id": "5d21f2b9d8544538a954d0639a5f8cf2",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "2e1fe2a5db8b4bc98891cc314f76f35c",
+          "Id": "7d6c8783b036486f862122afe8825343",
           "Name": "",
           "Description": "Input Data",
           "UsingDefaultValue": false,
@@ -202,11 +268,11 @@
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "e29cbaae930948038643888aba3676e2",
+      "Id": "1641a3e181744ca7ae65c60d0cad5edf",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "4080a37a5c67427d965d8162be2615b7",
+          "Id": "07cc4838350846be95c0b3dced95400f",
           "Name": "",
           "Description": "Input Data",
           "UsingDefaultValue": false,
@@ -228,11 +294,11 @@
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "018b626548814f82babe48b5e2089240",
+      "Id": "99473e57acea45b1aa938de8c7438ee4",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "18347d49a0b74996ad215f4881775a43",
+          "Id": "5fe7c7419a254e4f976cedea7a7c0842",
           "Name": "",
           "Description": "Input Data",
           "UsingDefaultValue": false,
@@ -249,10 +315,10 @@
       "NodeType": "OutputNode",
       "ElementResolver": null,
       "Symbol": "Pipe",
-      "Id": "e603e82601344a37a8713b8824dd5d52",
+      "Id": "ad0cd0c409c84ec4b45b69e2c808ad80",
       "Inputs": [
         {
-          "Id": "a5e3a5862d884f58a5dfa4b6b5c2ca6f",
+          "Id": "4e4169a2abf04990ba63e0041a42d526",
           "Name": "",
           "Description": "Output Data",
           "UsingDefaultValue": false,
@@ -268,45 +334,57 @@
   ],
   "Connectors": [
     {
-      "Start": "d0705c2ab6cc48b48228d1d6c55fcefa",
-      "End": "a5e3a5862d884f58a5dfa4b6b5c2ca6f",
-      "Id": "926e4cdc6cda4b8191386be62fa4fc5b",
+      "Start": "070ed43162c046448e3fb302d6db0ad4",
+      "End": "4e4169a2abf04990ba63e0041a42d526",
+      "Id": "cc48a55a2e9d4b50bcde9fa338af8abc",
       "IsHidden": "False"
     },
     {
-      "Start": "0929509b343348ea817661616d57a495",
-      "End": "d91c992236fc40eead4643e1f4fa8eb7",
-      "Id": "3199b6870ec5477082a65456f50e256e",
+      "Start": "ba116333ef094c899ee0b7c596200d15",
+      "End": "07121e3c6aa7499080cb4283c2f7a171",
+      "Id": "ae79ed2347a84c2c9e7dfeef6de14187",
       "IsHidden": "False"
     },
     {
-      "Start": "1a0934c4bb8f4418bf593bb2274ea90f",
-      "End": "8906c740c53b4f85a86bd3dfb5e7bbc1",
-      "Id": "66d10f18eb63430295b8e1c7035a197a",
+      "Start": "d29ec31d0f0a479e802d0456c9bfc4ef",
+      "End": "bbe18b37e7fc404d85546f4547e5a428",
+      "Id": "cda2627a82d64cd0870cea890205ff22",
       "IsHidden": "False"
     },
     {
-      "Start": "775f4fcbbfd84725982b597ac939c4c7",
-      "End": "ca7772f10c224990b7677cff1f1f47c3",
-      "Id": "e75e364fd81640abae30349334bb5863",
+      "Start": "dbe371912e554ead8b5e6db244c2315a",
+      "End": "47466c0fb6f148d99cfd92565385c9cd",
+      "Id": "8fab00206ee943bab4eaf30e988908ca",
       "IsHidden": "False"
     },
     {
-      "Start": "2e1fe2a5db8b4bc98891cc314f76f35c",
-      "End": "5a181081d92c427bb1ba9674f735eaad",
-      "Id": "19709a7cafcb4c1e99e928b49521c46d",
+      "Start": "73a4d1e263f24f50a161a2ba323dff00",
+      "End": "694c2ff5edc44a56876963d779aaf81b",
+      "Id": "74393c9a89be4262a2dc383da0f43993",
       "IsHidden": "False"
     },
     {
-      "Start": "4080a37a5c67427d965d8162be2615b7",
-      "End": "c3d98bdd05fd41ee8396eb18f061543d",
-      "Id": "39ddc829866f48629cb7d0b272d6f1f7",
+      "Start": "cf9815162f144f589986b074da63aab3",
+      "End": "277b06c3dbd74f81af80d16ff0086a1f",
+      "Id": "17294309a010446abad7a4c5d04fd984",
       "IsHidden": "False"
     },
     {
-      "Start": "18347d49a0b74996ad215f4881775a43",
-      "End": "b5c922e385b84c9f9d512321cbc7cbac",
-      "Id": "8e374f114b434ff79821c5cd55e699f6",
+      "Start": "7d6c8783b036486f862122afe8825343",
+      "End": "2aaa688b34c446b48fea6bfeb1cb9235",
+      "Id": "0f05a4e93b18431eb721b15ef3bdb60b",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "07cc4838350846be95c0b3dced95400f",
+      "End": "29611a47720641a2826ef8e3bb605a23",
+      "Id": "3ac18619fa8b430697ab709c7eef3b29",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "5fe7c7419a254e4f976cedea7a7c0842",
+      "End": "98351db3ad5541cfa4c2c68db5a42e13",
+      "Id": "249c3778580d491ba338c11f81ad6b1b",
       "IsHidden": "False"
     }
   ],
@@ -325,102 +403,122 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -17.0,
-      "EyeY": 24.0,
-      "EyeZ": 50.0,
-      "LookX": 12.0,
-      "LookY": -13.0,
-      "LookZ": -58.0,
-      "UpX": 0.0,
-      "UpY": 1.0,
-      "UpZ": 0.0
+      "EyeX": -32.143104553222656,
+      "EyeY": 58.04443359375,
+      "EyeZ": 18.964273452758789,
+      "LookX": 27.143104553222656,
+      "LookY": -47.04443359375,
+      "LookZ": -26.964273452758789,
+      "UpX": 0.44163680076599121,
+      "UpY": 0.7826082706451416,
+      "UpZ": -0.4387269914150238
     },
     "ConnectorPins": [],
     "NodeViews": [
       {
         "Name": "Python Script",
         "ShowGeometry": true,
-        "Id": "48bf2c3c58154d39ba15c55af2379f70",
+        "Id": "fd44892d4d364294b22b803451ea720a",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 562.21071934851955,
-        "Y": 551.5
+        "X": 514.8438877686167,
+        "Y": 812.74656140057607
+      },
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "43826e6e36df4899b0beb87884b8c3ca",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 117.8438877686167,
+        "Y": 529.74656140057607
+      },
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "70c009290a4d4559a0f95919072be484",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 117.8438877686167,
+        "Y": 676.74656140057607
       },
       {
         "Name": "Input",
         "ShowGeometry": true,
-        "Id": "e81c79d2b5f4441f8d4455b53afb2357",
+        "Id": "0d14a794a49e469282103e01a80a2ba8",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 251.21071934851955,
-        "Y": 268.50000000000006
+        "X": -240.1561122313833,
+        "Y": 529.74656140057607
       },
       {
         "Name": "Input",
         "ShowGeometry": true,
-        "Id": "49c2ebe1bd78411ebed29d8133dbcee9",
+        "Id": "4ef52d75f1044eef8143125f5ae205aa",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 251.21071934851955,
-        "Y": 415.50000000000006
+        "X": -240.1561122313833,
+        "Y": 676.74656140057607
       },
       {
         "Name": "Input",
         "ShowGeometry": true,
-        "Id": "a44b09f024d14723bdccd0c220946a65",
+        "Id": "2c2fa79e470747c3bcdf974679fd2f4f",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 251.21071934851955,
-        "Y": 562.5
+        "X": 117.8438877686167,
+        "Y": 823.74656140057607
       },
       {
         "Name": "Input",
         "ShowGeometry": true,
-        "Id": "6ad2fc52f7f84e93a534250d4c37fed3",
+        "Id": "5d21f2b9d8544538a954d0639a5f8cf2",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 251.21071934851955,
-        "Y": 709.5
+        "X": 117.8438877686167,
+        "Y": 970.74656140057607
       },
       {
         "Name": "Input",
         "ShowGeometry": true,
-        "Id": "e29cbaae930948038643888aba3676e2",
+        "Id": "1641a3e181744ca7ae65c60d0cad5edf",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 251.21071934851955,
-        "Y": 857.5
+        "X": 117.8438877686167,
+        "Y": 1118.746561400576
       },
       {
         "Name": "Input",
         "ShowGeometry": true,
-        "Id": "018b626548814f82babe48b5e2089240",
+        "Id": "99473e57acea45b1aa938de8c7438ee4",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 251.21071934851955,
-        "Y": 1005.5
+        "X": 117.8438877686167,
+        "Y": 1266.746561400576
       },
       {
         "Name": "Output",
         "ShowGeometry": true,
-        "Id": "e603e82601344a37a8713b8824dd5d52",
+        "Id": "ad0cd0c409c84ec4b45b69e2c808ad80",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 836.21071934851955,
-        "Y": 551.5
+        "X": 788.8438877686167,
+        "Y": 812.74656140057607
       }
     ],
     "Annotations": [],
-    "X": -86.245747667885865,
-    "Y": 23.127749694159718,
-    "Zoom": 0.85276592558149777
+    "X": 370.39226414757627,
+    "Y": -431.55968675160671,
+    "Zoom": 1.1988764122516977
   }
 }

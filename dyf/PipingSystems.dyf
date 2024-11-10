@@ -1,7 +1,7 @@
 {
   "Uuid": "1e977c90-052c-4859-babd-c5cdb2362b30",
   "IsCustomNode": true,
-  "Category": "BLIBET_NODES_2025.Pipes",
+  "Category": "BLIBET_NODES_2025.Pipes.Query",
   "Description": "",
   "Name": "PipingSystems",
   "ElementResolver": {

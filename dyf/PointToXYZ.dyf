@@ -1,0 +1,171 @@
+{
+  "Uuid": "4f38bc5d-6b5f-4dfa-91f6-3bdbb7f2a79c",
+  "IsCustomNode": true,
+  "Category": "BLIBET_NODES_2025.DynamoToRevitAPI.Actions",
+  "Description": "",
+  "Name": "PointToXYZ",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n######################################################\r\n#Inputs\r\nInput0 = UnwrapElement(IN[0]) \r\n\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\n\r\nInput0_list=[]\r\nif isinstance(Input0, list):\r\n    Input0_list = Input0\r\nelse:\r\n    Input0_list.append(Input0)\r\n\r\nXYZ_list=[]\r\nfor point in Input0_list:\r\n    XYZ_list.append(point.ToXyz())\r\n    \r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = XYZ_list",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "b21ce8a095dd43f09a6127e74fd99762",
+      "Inputs": [
+        {
+          "Id": "9057301df0ec4f3e88f2068527976169",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1fb5758748a74316985a8551417c7394",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "XYZ",
+      "Id": "58ebe71dfd35498a99aedccdd3eb069d",
+      "Inputs": [
+        {
+          "Id": "e8a24aab338a4182884b1d3198defeed",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
+      "NodeType": "InputNode",
+      "Parameter": {
+        "Name": "DynamoPoint",
+        "TypeName": "var",
+        "TypeRank": -1,
+        "DefaultValue": null,
+        "Description": ""
+      },
+      "Id": "2ba939323a614883a49538fe7dd2c01e",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "31a07f3dd62f4f0a94b7837c12c20ad9",
+          "Name": "",
+          "Description": "Input Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A function parameter, use with custom nodes.\r\n\r\nYou can specify the type and default value for parameter. E.g.,\r\n\r\ninput : var[]..[]\r\nvalue : bool = false"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "1fb5758748a74316985a8551417c7394",
+      "End": "e8a24aab338a4182884b1d3198defeed",
+      "Id": "6101c75490ec4fbcba0fdb0cf476ef76",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "31a07f3dd62f4f0a94b7837c12c20ad9",
+      "End": "9057301df0ec4f3e88f2068527976169",
+      "Id": "d3cef156f6ea452d8c4687387da104dd",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.16.2.5624",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "b21ce8a095dd43f09a6127e74fd99762",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 871.61199056493479,
+        "Y": 764.13779102122385
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "58ebe71dfd35498a99aedccdd3eb069d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1146.3548568360616,
+        "Y": 763.39492475009729
+      },
+      {
+        "Name": "Input",
+        "ShowGeometry": true,
+        "Id": "2ba939323a614883a49538fe7dd2c01e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 592.35485683606157,
+        "Y": 763.39492475009729
+      }
+    ],
+    "Annotations": [],
+    "X": -579.920738848477,
+    "Y": -580.65013664536446,
+    "Zoom": 1.3461373047445635
+  }
+}

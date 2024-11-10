@@ -1,9 +1,9 @@
 {
-  "Uuid": "ba865c72-fc04-48aa-b261-646ec156eb7a",
+  "Uuid": "fddb5ae5-ea08-460b-97af-2202f221f8be",
   "IsCustomNode": true,
   "Category": "BLIBET_NODES_2025.Pipes.Actions",
   "Description": "",
-  "Name": "PiPingSystemByName",
+  "Name": "PipingScheduleTypeByName",
   "ElementResolver": {
     "ResolutionMap": {}
   },
@@ -13,14 +13,14 @@
     {
       "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
       "NodeType": "PythonScriptNode",
-      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n######################################################\r\n#Inputs\r\npiping_system_name=UnwrapElement(IN[0])\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\npiping_systems=FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_PipingSystem).WhereElementIsElementType().ToElements()\r\n\r\n\r\npiping_system_by_name=filter(lambda system:system.get_Parameter(BuiltInParameter.SYMBOL_NAME_PARAM).AsValueString()==piping_system_name,piping_systems)\r\n\r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = piping_system_by_name",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nScheduleName = IN[0]\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nPipeScheduleTypes = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_PipeSchedules).WhereElementIsElementType().ToElements()\r\n\r\nScheduleTypeByName = filter(lambda pipeSchedule:pipeSchedule.get_Parameter(BuiltInParameter.SYMBOL_NAME_PARAM).AsString()==ScheduleName, PipeScheduleTypes)\r\n    \r\nTransactionManager.Instance.TransactionTaskDone()\r\n######################################################\r\n# Output\r\nOUT = ScheduleTypeByName",
       "Engine": "CPython3",
       "EngineName": "CPython3",
       "VariableInputPorts": true,
-      "Id": "8d70c8cd293e485084d289b1cd765983",
+      "Id": "b933dcc1bfd349749c0e91409ef2b0fd",
       "Inputs": [
         {
-          "Id": "61702ae8880d4b29b6c0830d29e5f428",
+          "Id": "17f82047956b45d2ae67d2cc5d7352b2",
           "Name": "IN[0]",
           "Description": "Input #0",
           "UsingDefaultValue": false,
@@ -31,7 +31,7 @@
       ],
       "Outputs": [
         {
-          "Id": "d435afe69fd14ae6bf0384b50af35c88",
+          "Id": "4a72446682d54ebc91f9a7f9076cb460",
           "Name": "OUT",
           "Description": "Result of the python script",
           "UsingDefaultValue": false,
@@ -47,17 +47,17 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Symbol, DynamoCore",
       "NodeType": "InputNode",
       "Parameter": {
-        "Name": "PipingSystemName",
+        "Name": "ScheduleTypeName",
         "TypeName": "var",
         "TypeRank": -1,
         "DefaultValue": null,
         "Description": ""
       },
-      "Id": "809f708e47c14184a941de235326a823",
+      "Id": "bbd556c12bd44d1b97a7d97125f7ba17",
       "Inputs": [],
       "Outputs": [
         {
-          "Id": "a56cdd32ac324ae9b3edf18978355398",
+          "Id": "c7c0a51de8114cf4b5756e0610c88863",
           "Name": "",
           "Description": "Input Data",
           "UsingDefaultValue": false,
@@ -73,11 +73,11 @@
       "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
       "NodeType": "OutputNode",
       "ElementResolver": null,
-      "Symbol": "PipingSystem",
-      "Id": "ba667a94acad43e38cae05968647f22c",
+      "Symbol": "ScheduleType",
+      "Id": "6f4312c3cba145a2b75a310c0a49b326",
       "Inputs": [
         {
-          "Id": "df001f4189754aa4980796988d643516",
+          "Id": "ed57cec151d74b56a2ea2a81d2635bea",
           "Name": "",
           "Description": "Output Data",
           "UsingDefaultValue": false,
@@ -93,15 +93,15 @@
   ],
   "Connectors": [
     {
-      "Start": "d435afe69fd14ae6bf0384b50af35c88",
-      "End": "df001f4189754aa4980796988d643516",
-      "Id": "43f12dc64dbf47988238e566d62de57e",
+      "Start": "4a72446682d54ebc91f9a7f9076cb460",
+      "End": "ed57cec151d74b56a2ea2a81d2635bea",
+      "Id": "8805e5cce7664678a1d0d728f52b6b9d",
       "IsHidden": "False"
     },
     {
-      "Start": "a56cdd32ac324ae9b3edf18978355398",
-      "End": "61702ae8880d4b29b6c0830d29e5f428",
-      "Id": "9323c3b090ac4315a1620c0e36c9537f",
+      "Start": "c7c0a51de8114cf4b5756e0610c88863",
+      "End": "17f82047956b45d2ae67d2cc5d7352b2",
+      "Id": "91fb3023b08b476d84659eb801f30061",
       "IsHidden": "False"
     }
   ],
@@ -120,47 +120,47 @@
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": -17.0,
-      "EyeY": 24.0,
-      "EyeZ": 50.0,
-      "LookX": 12.0,
-      "LookY": -13.0,
-      "LookZ": -58.0,
-      "UpX": 0.0,
-      "UpY": 1.0,
-      "UpZ": 0.0
+      "EyeX": -32.143104553222656,
+      "EyeY": 58.04443359375,
+      "EyeZ": 18.964273452758789,
+      "LookX": 27.143104553222656,
+      "LookY": -47.04443359375,
+      "LookZ": -26.964273452758789,
+      "UpX": 0.44163680076599121,
+      "UpY": 0.7826082706451416,
+      "UpZ": -0.4387269914150238
     },
     "ConnectorPins": [],
     "NodeViews": [
       {
         "Name": "Python Script",
         "ShowGeometry": true,
-        "Id": "8d70c8cd293e485084d289b1cd765983",
+        "Id": "b933dcc1bfd349749c0e91409ef2b0fd",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 331.0,
-        "Y": 206.0
+        "X": 312.0,
+        "Y": 304.0
       },
       {
         "Name": "Input",
         "ShowGeometry": true,
-        "Id": "809f708e47c14184a941de235326a823",
+        "Id": "bbd556c12bd44d1b97a7d97125f7ba17",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 82.0,
-        "Y": 218.0
+        "X": 42.0,
+        "Y": 297.0
       },
       {
         "Name": "Output",
         "ShowGeometry": true,
-        "Id": "ba667a94acad43e38cae05968647f22c",
+        "Id": "6f4312c3cba145a2b75a310c0a49b326",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 697.0,
-        "Y": 204.0
+        "X": 573.0,
+        "Y": 319.0
       }
     ],
     "Annotations": [],

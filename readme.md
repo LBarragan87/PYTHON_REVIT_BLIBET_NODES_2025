@@ -82,5 +82,10 @@
             <li>StructuralRebars</li>
         </ul>
         <hr />
+        <h2>System Families</h2>
+        <h3>Build</h3>
+        <ul>
+            <li><a href="./extra/SystemFamilies/WallTypes.md">WallTypes</a></li>
+        </ul>
     </div>
 </div>

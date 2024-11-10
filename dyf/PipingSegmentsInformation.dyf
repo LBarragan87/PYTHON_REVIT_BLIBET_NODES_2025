@@ -1,0 +1,119 @@
+{
+  "Uuid": "2883cbd0-3f29-417d-8dbd-28bd0ae333cc",
+  "IsCustomNode": true,
+  "Category": "BLIBET_NODES_2025.Pipes.Query",
+  "Description": "",
+  "Name": "PipingSegmentsInformation",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import System\r\nimport clr\r\n\r\n#import DSCoreNodes\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n#Import ProtoGeometry\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\n\r\n# Import RevitNodes\r\nclr.AddReference(\"RevitNodes\")\r\nfrom Revit import *\r\nimport Revit\r\nclr.ImportExtensions(Revit.Elements)\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\n\r\n# Import Revit elements\r\nfrom Revit.Elements import *\r\n\r\n# Import RevitAPI\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\n\r\n# Import DocumentManager\r\nclr.AddReference(\"RevitServices\")\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\n\r\n#Get Document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n######################################################\r\n# Start Code\r\nTransactionManager.Instance.EnsureInTransaction(doc)\r\nPipingSegments = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_PipeSegments).WhereElementIsNotElementType().ToElements()\r\n    \r\nTransactionManager.Instance.TransactionTaskDone()\r\nSize_list_master=[]\r\n\r\nfor pipeSegment in PipingSegments:\r\n    MEPSizes_list = pipeSegment.GetSizes()\r\n    nominalDiameters=[]\r\n    innerDiameters=[]\r\n    outerDiameters=[]\r\n    pipe_segments_Name=[]\r\n    for MEPSize_Row in MEPSizes_list:\r\n        pipe_segments_Name.append(pipeSegment.Name)\r\n        nominalDiameters.append(MEPSize_Row.NominalDiameter*12*0.0254)\r\n        innerDiameters.append(MEPSize_Row.InnerDiameter*12*0.0254)\r\n        outerDiameters.append(MEPSize_Row.OuterDiameter*12*0.0254)\r\n    x=List.Transpose([pipe_segments_Name,nominalDiameters,innerDiameters,outerDiameters])\r\n    Size_list_master.append(x)\r\n######################################################\r\n# Output\r\nOUT = Size_list_master",
+      "Engine": "CPython3",
+      "EngineName": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "35dfcea4f3ad4aa790a477f5820e7500",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "c312e95064b1477bb4e573a8f97d53e4",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "NodeType": "OutputNode",
+      "ElementResolver": null,
+      "Symbol": "",
+      "Id": "4a8fdea0ad84413fbfef2913ab45ef22",
+      "Inputs": [
+        {
+          "Id": "4cc5c8a652dc4111ba6434d70f0ecb81",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "c312e95064b1477bb4e573a8f97d53e4",
+      "End": "4cc5c8a652dc4111ba6434d70f0ecb81",
+      "Id": "64fdb34716d04f07a2a22340b5044cee",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.16.2.5624",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -32.143104553222656,
+      "EyeY": 58.04443359375,
+      "EyeZ": 18.964273452758789,
+      "LookX": 27.143104553222656,
+      "LookY": -47.04443359375,
+      "LookZ": -26.964273452758789,
+      "UpX": 0.44163680076599121,
+      "UpY": 0.7826082706451416,
+      "UpZ": -0.4387269914150238
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Name": "Python Script",
+        "ShowGeometry": true,
+        "Id": "35dfcea4f3ad4aa790a477f5820e7500",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 412.21718768222604,
+        "Y": 629.21112145579377
+      },
+      {
+        "Name": "Output",
+        "ShowGeometry": true,
+        "Id": "4a8fdea0ad84413fbfef2913ab45ef22",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 686.217187682226,
+        "Y": 629.21112145579377
+      }
+    ],
+    "Annotations": [],
+    "X": -677.70432123147009,
+    "Y": -594.98790921381556,
+    "Zoom": 1.7835993623828124
+  }
+}
